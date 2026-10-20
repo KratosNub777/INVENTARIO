@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fallar } from "@/lib/util";
 
 const texto = z.string().trim().default("").transform((v) => v || null);
 const id = z.string().trim().default("").transform((v) => v || null);
@@ -43,10 +44,9 @@ export const invitacionSchema = z.object({
   rol: z.enum(["admin", "operador"]),
 });
 
-// Primer mensaje de error legible, o los datos validados.
-export function validar<T extends z.ZodType>(schema: T, formData: FormData) {
+// Devuelve los datos validados; si no valen, vuelve a `ruta` con el primer error legible.
+export function validar<T extends z.ZodType>(schema: T, formData: FormData, ruta: string): z.infer<T> {
   const r = schema.safeParse(Object.fromEntries(formData));
-  return r.success
-    ? { datos: r.data as z.infer<T>, error: null }
-    : { datos: null, error: r.error.issues[0].message };
+  if (!r.success) fallar(ruta, r.error.issues[0].message);
+  return r.data;
 }

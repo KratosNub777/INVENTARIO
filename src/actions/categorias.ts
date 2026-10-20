@@ -11,13 +11,12 @@ const mensaje = (e: { code?: string; message: string }) =>
 
 export async function guardarCategoria(formData: FormData) {
   const { supabase } = await requireAdmin();
-  const { datos, error } = validar(categoriaSchema, formData);
-  if (error) fallar("/categorias", error);
+  const datos = validar(categoriaSchema, formData, "/categorias");
   const id = formData.get("id");
 
   const { error: err } = id
-    ? await supabase.from("categorias").update(datos!).eq("id", String(id))
-    : await supabase.from("categorias").insert(datos!);
+    ? await supabase.from("categorias").update(datos).eq("id", String(id))
+    : await supabase.from("categorias").insert(datos);
   if (err) fallar("/categorias", mensaje(err));
   revalidatePath("/categorias");
   redirect("/categorias");

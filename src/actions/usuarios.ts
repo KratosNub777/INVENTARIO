@@ -9,18 +9,17 @@ import { invitacionSchema, validar } from "@/lib/validaciones";
 
 export async function invitarUsuario(formData: FormData) {
   await requireAdmin();
-  const { datos, error } = validar(invitacionSchema, formData);
-  if (error) fallar("/usuarios", error);
+  const datos = validar(invitacionSchema, formData, "/usuarios");
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) fallar("/usuarios", "Falta SUPABASE_SERVICE_ROLE_KEY en el servidor");
 
   const admin = createAdminClient();
-  const { data, error: errInv } = await admin.auth.admin.inviteUserByEmail(datos!.email, {
-    data: { nombre: datos!.nombre },
+  const { data, error: errInv } = await admin.auth.admin.inviteUserByEmail(datos.email, {
+    data: { nombre: datos.nombre },
   });
   if (errInv) fallar("/usuarios", errInv.message);
 
   // El trigger crea el perfil como operador; ajustamos el rol si hace falta.
-  if (datos!.rol === "admin") {
+  if (datos.rol === "admin") {
     const { error: errRol } = await admin.from("perfiles").update({ rol: "admin" }).eq("id", data.user.id);
     if (errRol) fallar("/usuarios", errRol.message);
   }

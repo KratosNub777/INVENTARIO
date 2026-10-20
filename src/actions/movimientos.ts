@@ -8,16 +8,15 @@ import { movimientoSchema, validar } from "@/lib/validaciones";
 
 export async function registrarMovimiento(formData: FormData) {
   const { supabase } = await getSesion();
-  const { datos, error } = validar(movimientoSchema, formData);
-  if (error) fallar("/movimientos", error);
+  const datos = validar(movimientoSchema, formData, "/movimientos");
 
-  const { error: errRpc } = await supabase.rpc("registrar_movimiento", {
-    p_producto_id: datos!.producto_id,
-    p_tipo: datos!.tipo,
-    p_cantidad: datos!.cantidad,
-    p_motivo: datos!.motivo,
+  const { error } = await supabase.rpc("registrar_movimiento", {
+    p_producto_id: datos.producto_id,
+    p_tipo: datos.tipo,
+    p_cantidad: datos.cantidad,
+    p_motivo: datos.motivo,
   });
-  if (errRpc) fallar(`/movimientos?producto=${datos!.producto_id}`, errRpc.message);
+  if (error) fallar(`/movimientos?producto=${datos.producto_id}`, error.message);
 
   revalidatePath("/", "layout");
   redirect("/movimientos");

@@ -26,8 +26,7 @@ const mensaje = (e: { code?: string; message: string }) =>
 
 export async function crearProducto(formData: FormData) {
   const { supabase } = await getSesion();
-  const { datos, error } = validar(productoSchema, formData);
-  if (error) fallar("/productos/nuevo", error);
+  const datos = validar(productoSchema, formData, "/productos/nuevo");
   const stockInicial = Number(formData.get("stock_inicial") || 0);
   if (!(stockInicial >= 0)) fallar("/productos/nuevo", "El stock inicial no puede ser negativo");
 
@@ -58,8 +57,7 @@ export async function actualizarProducto(formData: FormData) {
   const { supabase } = await getSesion();
   const id = String(formData.get("id"));
   const ruta = `/productos/${id}`;
-  const { datos, error } = validar(productoSchema, formData);
-  if (error) fallar(ruta, error);
+  const datos = validar(productoSchema, formData, ruta);
 
   const img = await subirImagen(supabase, formData.get("imagen"));
   if (img.error) fallar(ruta, img.error);
