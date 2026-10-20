@@ -16,4 +16,5 @@ Sistema de inventario web (Next.js 15 + Supabase). Plan completo en `README.md`.
 - Repo git real: esta carpeta (`INVENTARIO/INVENTARIO`), remoto `https://github.com/KratosNub777/INVENTARIO.git`, rama `main`.
 - Stack: Next.js 15 (App Router, TS), Tailwind, Supabase (Postgres + Auth + Storage), zod, exceljs, jspdf.
 - El stock solo cambia vía la función SQL `registrar_movimiento`; eliminar productos = `activo = false`.
+- Todos los usuarios son `admin` (solo 2 personas lo usan). Diseño: acento esmeralda único sobre neutros zinc, modo claro/oscuro automático, fuente Geist, iconos Phosphor, animaciones CSS que respetan `prefers-reduced-motion`; sin guiones largos (`—`) en textos visibles.
 - Verificación en cada fase: `npm run lint` y `npm run build`.
