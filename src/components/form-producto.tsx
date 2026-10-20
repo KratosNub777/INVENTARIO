@@ -31,13 +31,13 @@ export function FormProducto({ action, categorias, proveedores, producto: p }: P
       </Campo>
       <Campo label="Categoría">
         <select name="categoria_id" defaultValue={p?.categoria_id ?? ""} className="input">
-          <option value="">— Sin categoría —</option>
+          <option value="">Sin categoría</option>
           {categorias.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
         </select>
       </Campo>
       <Campo label="Proveedor">
         <select name="proveedor_id" defaultValue={p?.proveedor_id ?? ""} className="input">
-          <option value="">— Sin proveedor —</option>
+          <option value="">Sin proveedor</option>
           {proveedores.map((v) => <option key={v.id} value={v.id}>{v.nombre}</option>)}
         </select>
       </Campo>

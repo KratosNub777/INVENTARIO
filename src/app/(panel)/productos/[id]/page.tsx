@@ -36,7 +36,7 @@ export default async function DetalleProducto({
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-xl font-semibold">{p.nombre}</h1>
+        <h1 className="titulo">{p.nombre}</h1>
         <div className="flex gap-2">
           <Link href={`/movimientos?producto=${p.id}`} className="btn">Registrar movimiento</Link>
           {perfil.rol === "admin" && (
@@ -55,7 +55,7 @@ export default async function DetalleProducto({
           <img src={p.imagen_url} alt={p.nombre} className="h-24 w-24 rounded-md object-cover" />
         )}
         <div>
-          <p className="text-sm text-slate-500">Stock actual</p>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">Stock actual</p>
           <p className="text-3xl font-semibold">{cantidad(p.stock_actual)} <span className="text-base font-normal">{p.unidad}</span></p>
           {p.stock_actual <= p.stock_minimo && <p className="text-sm text-red-600">Stock bajo (mínimo {cantidad(p.stock_minimo)})</p>}
         </div>
@@ -79,11 +79,11 @@ export default async function DetalleProducto({
                 <td className="capitalize">{m.tipo}</td>
                 <td>{m.tipo === "ajuste" && m.cantidad > 0 ? "+" : ""}{cantidad(m.cantidad)}</td>
                 <td>{cantidad(m.stock_anterior)} → {cantidad(m.stock_nuevo)}</td>
-                <td>{m.motivo ?? "—"}</td>
-                <td>{m.perfiles?.nombre ?? "—"}</td>
+                <td>{m.motivo ?? "-"}</td>
+                <td>{m.perfiles?.nombre ?? "-"}</td>
               </tr>
             ))}
-            {!historial.length && <tr><td colSpan={6} className="py-6 text-center text-slate-500">Sin movimientos</td></tr>}
+            {!historial.length && <tr><td colSpan={6} className="py-6 text-center text-zinc-600 dark:text-zinc-400">Sin movimientos</td></tr>}
           </tbody>
         </table>
       </div>

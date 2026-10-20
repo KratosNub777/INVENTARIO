@@ -13,7 +13,7 @@ export default async function NuevoProducto({ searchParams }: { searchParams: Pr
   ]);
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold">Nuevo producto</h1>
+      <h1 className="titulo">Nuevo producto</h1>
       <Aviso error={error} />
       <FormProducto
         action={crearProducto}

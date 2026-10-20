@@ -12,7 +12,7 @@ export default async function Categorias({ searchParams }: { searchParams: Promi
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold">Categorías</h1>
+      <h1 className="titulo">Categorías</h1>
       <Aviso error={error} />
 
       {admin && (
@@ -36,11 +36,11 @@ export default async function Categorias({ searchParams }: { searchParams: Promi
           ) : (
             <div key={c.id} className="card">
               <p className="font-medium">{c.nombre}</p>
-              <p className="text-sm text-slate-500">{c.descripcion}</p>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">{c.descripcion}</p>
             </div>
           ),
         )}
-        {!categorias.length && <p className="text-sm text-slate-500">Aún no hay categorías.</p>}
+        {!categorias.length && <p className="text-sm text-zinc-600 dark:text-zinc-400">Aún no hay categorías.</p>}
       </div>
     </div>
   );

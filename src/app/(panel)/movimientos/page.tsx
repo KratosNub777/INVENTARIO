@@ -33,7 +33,7 @@ export default async function Movimientos({ searchParams }: { searchParams: Prom
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold">Movimientos</h1>
+      <h1 className="titulo">Movimientos</h1>
       <Aviso error={sp.error} />
 
       <form action={registrarMovimiento} className="card grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
@@ -93,19 +93,19 @@ export default async function Movimientos({ searchParams }: { searchParams: Prom
             {filas.map((m) => (
               <tr key={m.id}>
                 <td>{fechaHora(m.created_at)}</td>
-                <td>{m.productos ? `${m.productos.sku} · ${m.productos.nombre}` : "—"}</td>
+                <td>{m.productos ? `${m.productos.sku} · ${m.productos.nombre}` : "-"}</td>
                 <td className="capitalize">{m.tipo}</td>
                 <td>{m.tipo === "ajuste" && m.cantidad > 0 ? "+" : ""}{cantidad(m.cantidad)}</td>
                 <td>{cantidad(m.stock_anterior)} → {cantidad(m.stock_nuevo)}</td>
-                <td>{m.motivo ?? "—"}</td>
-                <td>{m.perfiles?.nombre ?? "—"}</td>
+                <td>{m.motivo ?? "-"}</td>
+                <td>{m.perfiles?.nombre ?? "-"}</td>
               </tr>
             ))}
-            {!filas.length && <tr><td colSpan={7} className="py-6 text-center text-slate-500">Sin movimientos</td></tr>}
+            {!filas.length && <tr><td colSpan={7} className="py-6 text-center text-zinc-600 dark:text-zinc-400">Sin movimientos</td></tr>}
           </tbody>
         </table>
       </div>
-      <p className="text-xs text-slate-500">Se muestran los últimos 200 movimientos que coinciden con el filtro.</p>
+      <p className="text-xs text-zinc-600 dark:text-zinc-400">Se muestran los últimos 200 movimientos que coinciden con el filtro.</p>
     </div>
   );
 }
