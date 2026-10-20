@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Package } from "@phosphor-icons/react/dist/ssr";
 import { Aviso } from "@/components/aviso";
+import { Vacio } from "@/components/vacio";
 import { getSesion } from "@/lib/auth";
 import { cantidad, dinero } from "@/lib/util";
 import type { Categoria, Producto, Proveedor } from "@/types/database";
@@ -58,7 +60,7 @@ export default async function Productos({ searchParams }: { searchParams: Promis
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Productos</h1>
+        <h1 className="titulo">Productos</h1>
         <Link href="/productos/nuevo" className="btn">Nuevo producto</Link>
       </div>
       <Aviso error={sp.error} />
@@ -88,19 +90,43 @@ export default async function Productos({ searchParams }: { searchParams: Promis
             {filas.map((p) => (
               <tr key={p.id}>
                 <td>{p.sku}</td>
-                <td><Link href={`/productos/${p.id}`} className="font-medium underline">{p.nombre}</Link></td>
-                <td>{p.categorias?.nombre ?? "—"}</td>
+                <td>
+                  <Link href={`/productos/${p.id}`} className="flex items-center gap-3 font-medium hover:underline">
+                    {p.imagen_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={p.imagen_url} alt="" className="size-9 shrink-0 rounded-lg object-cover" />
+                    ) : (
+                      <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-zinc-100 text-zinc-500 dark:bg-zinc-800">
+                        <Package size={18} />
+                      </span>
+                    )}
+                    {p.nombre}
+                  </Link>
+                </td>
+                <td>{p.categorias?.nombre ?? "-"}</td>
                 <td>
                   {cantidad(p.stock_actual)} {p.unidad}
                   {p.stock_actual <= p.stock_minimo && (
-                    <span className="ml-2 rounded bg-red-100 px-1.5 py-0.5 text-xs text-red-700">Bajo</span>
+                    <span className="chip chip-alerta ml-2">Bajo</span>
                   )}
                 </td>
                 <td>{dinero(p.precio_venta)}</td>
-                <td>{p.ubicacion ?? "—"}</td>
+                <td>{p.ubicacion ?? "-"}</td>
               </tr>
             ))}
-            {!filas.length && <tr><td colSpan={6} className="py-6 text-center text-slate-500">Sin resultados</td></tr>}
+            {!filas.length && (
+              <tr>
+                <td colSpan={6}>
+                  <Vacio
+                    icono={<Package size={24} weight="duotone" />}
+                    titulo="No hay productos para mostrar"
+                    texto="Prueba con otros filtros o agrega tu primer producto."
+                    href="/productos/nuevo"
+                    accion="Nuevo producto"
+                  />
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
