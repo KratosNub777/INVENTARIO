@@ -10,13 +10,13 @@ Sistema de inventario web (responsivo) para una sola bodega: productos, stock, m
 2. Ejecutar en el SQL editor, en orden, `supabase/migrations/001…005_*.sql` (o `supabase db push` con la CLI). Opcional: `supabase/seed.sql` con datos de ejemplo.
 3. Copiar `.env.example` a `.env.local` y completar las claves (Project Settings → API). `SUPABASE_SERVICE_ROLE_KEY` solo se usa en el servidor para invitar usuarios.
 4. `npm install` y `npm run dev` → http://localhost:3000.
-5. Crear el primer usuario en Supabase (Authentication → Users → Add user). **El primer usuario registrado queda como `admin`**; los siguientes son `operador`.
+5. Crear el primer usuario en Supabase (Authentication → Users → Add user). Todo usuario nuevo queda como `admin`.
 
 ## Reglas del modelo
 
 - El stock **nunca se edita a mano**: solo cambia con la función SQL `registrar_movimiento` (bloquea la fila, valida que no quede negativo, actualiza el stock y guarda el movimiento). Un trigger rechaza cualquier otro cambio.
 - **Eliminar = desactivar** (`activo = false`); solo un admin puede hacerlo. Así se conserva el historial.
-- Roles: `operador` crea/edita productos y registra movimientos; `admin` además elimina, gestiona categorías, proveedores y usuarios. Todo protegido con RLS.
+- Todos los usuarios son `admin` (lo fija el trigger de Auth, migración 007): solo lo usan 2 personas de confianza. El rol `operador` sigue existiendo en la base por si se necesita más adelante. Todo está protegido con RLS.
 - Movimiento tipo `ajuste`: se ingresa el **stock contado**; se guarda la diferencia.
 
 ## Pantallas
