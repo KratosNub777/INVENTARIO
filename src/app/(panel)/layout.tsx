@@ -1,40 +1,47 @@
-import Link from "next/link";
+import { Cube, SignOut } from "@phosphor-icons/react/dist/ssr";
 import { logout } from "@/actions/auth";
+import { NavInferior, NavLateral } from "@/components/nav";
 import { getSesion } from "@/lib/auth";
 
-const enlaces = [
-  ["/", "Dashboard"],
-  ["/productos", "Productos"],
-  ["/movimientos", "Movimientos"],
-  ["/categorias", "Categorías"],
-  ["/proveedores", "Proveedores"],
-  ["/reportes", "Reportes"],
-];
+function Marca() {
+  return (
+    <div className="flex items-center gap-2.5 font-semibold tracking-tight">
+      <span className="grid size-8 place-items-center rounded-lg bg-emerald-700 text-white">
+        <Cube size={18} weight="fill" />
+      </span>
+      Inventario
+    </div>
+  );
+}
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
   const { perfil } = await getSesion();
-  const items = perfil.rol === "admin" ? [...enlaces, ["/usuarios", "Usuarios"]] : enlaces;
   return (
-    <div className="min-h-screen md:flex">
-      <aside className="bg-slate-900 text-slate-100 md:w-56 md:shrink-0">
-        <div className="flex items-center justify-between px-4 py-3 md:block">
-          <span className="font-semibold">Inventario</span>
-          <span className="text-xs text-slate-400 md:block">{perfil.nombre} · {perfil.rol}</span>
+    <div className="min-h-[100dvh] md:flex">
+      <aside className="sticky top-0 hidden h-[100dvh] w-60 shrink-0 flex-col justify-between border-r border-zinc-200 bg-white p-4 md:flex dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="space-y-6">
+          <Marca />
+          <NavLateral />
         </div>
-        <nav className="flex gap-1 overflow-x-auto px-2 pb-2 md:flex-col md:pb-0">
-          {items.map(([href, texto]) => (
-            <Link key={href} href={href} className="whitespace-nowrap rounded-md px-3 py-2 text-sm hover:bg-slate-700">
-              {texto}
-            </Link>
-          ))}
-          <form action={logout} className="md:mt-4">
-            <button className="w-full whitespace-nowrap rounded-md px-3 py-2 text-left text-sm text-slate-300 hover:bg-slate-700">
-              Cerrar sesión
-            </button>
-          </form>
-        </nav>
+        <form action={logout} className="flex items-center justify-between gap-2 rounded-lg border border-zinc-200 p-2 pl-3 dark:border-zinc-800">
+          <span className="truncate text-sm font-medium">{perfil.nombre}</span>
+          <button aria-label="Cerrar sesión" title="Cerrar sesión" className="btn-sec px-2">
+            <SignOut size={18} />
+          </button>
+        </form>
       </aside>
-      <main className="min-w-0 flex-1 p-4 md:p-6">{children}</main>
+
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-zinc-200 bg-white/90 px-4 py-3 backdrop-blur md:hidden dark:border-zinc-800 dark:bg-zinc-900/90">
+        <Marca />
+        <form action={logout}>
+          <button aria-label="Cerrar sesión" className="btn-sec px-2"><SignOut size={18} /></button>
+        </form>
+      </header>
+
+      <main className="min-w-0 flex-1 p-4 pb-24 md:p-8">
+        <div className="mx-auto max-w-6xl">{children}</div>
+      </main>
+      <NavInferior />
     </div>
   );
 }
