@@ -10,33 +10,32 @@ export default async function Usuarios({ searchParams }: { searchParams: Promise
   const perfiles = (data ?? []) as Perfil[];
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-xl font-semibold">Usuarios</h1>
+    <div className="space-y-6">
+      <div>
+        <h1 className="titulo">Usuarios</h1>
+        <p className="subtitulo">Todos los usuarios tienen acceso completo.</p>
+      </div>
       <Aviso error={error} />
 
-      <form action={invitarUsuario} className="card grid gap-3 sm:grid-cols-5">
-        <input name="nombre" placeholder="Nombre *" required className="input" />
-        <input name="email" type="email" placeholder="Email *" required className="input sm:col-span-2" />
-        <select name="rol" defaultValue="operador" className="input">
-          <option value="operador">Operador</option>
-          <option value="admin">Admin</option>
-        </select>
+      <form action={invitarUsuario} className="card grid gap-3 sm:grid-cols-4">
+        <input name="nombre" placeholder="Nombre" aria-label="Nombre" required className="input" />
+        <input name="email" type="email" placeholder="Email" aria-label="Email" required className="input sm:col-span-2" />
         <button className="btn">Invitar</button>
       </form>
 
-      <div className="space-y-2">
+      <div className="space-y-2 escalonado">
         {perfiles.map((u) => (
-          <form key={u.id} action={actualizarUsuario} className="card grid items-center gap-3 sm:grid-cols-4">
+          <form key={u.id} action={actualizarUsuario} className="card flex items-center justify-between gap-3">
             <input type="hidden" name="id" value={u.id} />
-            <p className="font-medium">{u.nombre}{u.id === user.id && " (tú)"}</p>
-            <select name="rol" defaultValue={u.rol} disabled={u.id === user.id} aria-label="Rol" className="input">
-              <option value="operador">Operador</option>
-              <option value="admin">Admin</option>
-            </select>
-            <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" name="activo" defaultChecked={u.activo} disabled={u.id === user.id} /> Activo
-            </label>
-            {u.id !== user.id && <button className="btn-sec">Guardar</button>}
+            <p className="font-medium">{u.nombre}{u.id === user.id && <span className="ml-2 text-sm text-zinc-500">(tú)</span>}</p>
+            {u.id !== user.id && (
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 text-sm">
+                  <input type="checkbox" name="activo" defaultChecked={u.activo} className="size-4 accent-emerald-700" /> Activo
+                </label>
+                <button className="btn-sec">Guardar</button>
+              </div>
+            )}
           </form>
         ))}
       </div>

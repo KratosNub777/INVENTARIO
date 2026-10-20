@@ -41,7 +41,6 @@ export const proveedorSchema = z.object({
 export const invitacionSchema = z.object({
   email: z.email("Email inválido"),
   nombre: z.string().trim().min(1, "El nombre es obligatorio"),
-  rol: z.enum(["admin", "operador"]),
 });
 
 // Devuelve los datos validados; si no valen, vuelve a `ruta` con el primer error legible.
