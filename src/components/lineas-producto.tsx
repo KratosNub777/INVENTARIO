@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Plus, Trash } from "@phosphor-icons/react";
+import { CampoDinero } from "@/components/campo-dinero";
 import { dinero } from "@/lib/util";
 
 export type OpcionProducto = { id: string; sku: string; nombre: string; precio: number; stock?: number };
@@ -29,7 +30,10 @@ export function LineasProducto({
         if (j !== i) return l;
         const nueva = { ...l, [campo]: valor };
         // Al elegir producto se propone su precio; el usuario puede cambiarlo.
-        if (campo === "producto_id") nueva.precio = String(productos.find((p) => p.id === valor)?.precio ?? "");
+        if (campo === "producto_id") {
+          const p = productos.find((p) => p.id === valor);
+          nueva.precio = p ? String(Math.round(Number(p.precio))) : "";
+        }
         return nueva;
       }),
     );
@@ -60,10 +64,9 @@ export function LineasProducto({
             onChange={(e) => cambiar(i, "cantidad", e.target.value)}
             aria-label="Cantidad" placeholder="Cantidad" className="input"
           />
-          <input
-            type="number" min="0" step="any" required value={l.precio}
-            onChange={(e) => cambiar(i, "precio", e.target.value)}
-            aria-label={etiquetaPrecio} placeholder={etiquetaPrecio} className="input"
+          <CampoDinero
+            required value={l.precio} onValor={(v) => cambiar(i, "precio", v)}
+            aria-label={etiquetaPrecio} placeholder={etiquetaPrecio}
           />
           <button
             type="button"

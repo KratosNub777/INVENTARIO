@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CampoDinero } from "@/components/campo-dinero";
 import type { Categoria, Producto, Proveedor } from "@/types/database";
 
 type Props = {
@@ -42,8 +43,8 @@ export function FormProducto({ action, categorias, proveedores, producto: p }: P
           {proveedores.map((v) => <option key={v.id} value={v.id}>{v.nombre}</option>)}
         </select>
       </Campo>
-      <Campo label="Precio costo"><input name="precio_costo" type="number" min="0" step="0.01" defaultValue={p?.precio_costo ?? 0} className="input" /></Campo>
-      <Campo label="Precio venta"><input name="precio_venta" type="number" min="0" step="0.01" defaultValue={p?.precio_venta ?? 0} className="input" /></Campo>
+      <Campo label="Precio costo"><CampoDinero name="precio_costo" defaultValue={p?.precio_costo ?? 0} /></Campo>
+      <Campo label="Precio venta"><CampoDinero name="precio_venta" defaultValue={p?.precio_venta ?? 0} /></Campo>
       <Campo label="Stock mínimo"><input name="stock_minimo" type="number" min="0" step="any" defaultValue={p?.stock_minimo ?? 0} className="input" /></Campo>
       {!p && (
         <Campo label="Stock inicial"><input name="stock_inicial" type="number" min="0" step="any" defaultValue={0} className="input" /></Campo>

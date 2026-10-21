@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useState } from "react";
 import { registrarVenta } from "@/actions/ventas";
+import { CampoDinero } from "@/components/campo-dinero";
 import { LineasProducto, type OpcionProducto } from "@/components/lineas-producto";
 import { dinero, fecha, hoy, MEDIOS } from "@/lib/util";
 
@@ -88,9 +89,9 @@ export function FormVenta({ productos, clientes }: { productos: OpcionProducto[]
           <div className="grid gap-3 sm:grid-cols-3">
             <label>
               <span className="label">Precio total a cuotas (con interés)</span>
-              <input
-                type="number" min="1" step="1" required value={totalCredito} className="input"
-                onChange={(e) => { setTotalCredito(e.target.value); regenerar(e.target.value, n, primera); }}
+              <CampoDinero
+                required value={totalCredito}
+                onValor={(v) => { setTotalCredito(v); regenerar(v, n, primera); }}
               />
             </label>
             <label>
@@ -118,9 +119,9 @@ export function FormVenta({ productos, clientes }: { productos: OpcionProducto[]
                 {cuotas.map((c, i) => (
                   <div key={i} className="grid grid-cols-[2.5rem_1fr_1fr] items-center gap-2">
                     <span className="text-sm font-medium tabular-nums">{i + 1}.</span>
-                    <input
-                      type="number" min="1" step="1" required value={c.monto} aria-label={`Monto cuota ${i + 1}`} className="input"
-                      onChange={(e) => setCuotas((cs) => cs.map((x, j) => (j === i ? { ...x, monto: e.target.value } : x)))}
+                    <CampoDinero
+                      required value={c.monto} aria-label={`Monto cuota ${i + 1}`}
+                      onValor={(v) => setCuotas((cs) => cs.map((x, j) => (j === i ? { ...x, monto: v } : x)))}
                     />
                     <input
                       type="date" required value={c.vence} aria-label={`Vencimiento cuota ${i + 1}`} className="input"
