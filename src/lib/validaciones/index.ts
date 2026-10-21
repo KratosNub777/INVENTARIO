@@ -40,7 +40,7 @@ export const proveedorSchema = z.object({
 
 export const clienteSchema = z.object({
   nombre: z.string().trim().min(1, "El nombre es obligatorio"),
-  rut: texto,
+  ruc: texto,
   telefono: texto,
   email: z.string().trim().default("").pipe(z.union([z.literal(""), z.email("Email inválido")])).transform((v) => v || null),
   direccion: texto,

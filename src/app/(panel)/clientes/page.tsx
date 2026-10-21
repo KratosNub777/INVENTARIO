@@ -16,7 +16,7 @@ export default async function Clientes({ searchParams }: { searchParams: Promise
   const error = sp.error;
 
   let consulta = supabase.from("clientes").select("*").eq("activo", true).order("nombre");
-  if (q) consulta = consulta.or(`nombre.ilike.%${q}%,rut.ilike.%${q}%,telefono.ilike.%${q}%`);
+  if (q) consulta = consulta.or(`nombre.ilike.%${q}%,ruc.ilike.%${q}%,telefono.ilike.%${q}%`);
   const [{ data }, { data: pendientes }] = await Promise.all([
     consulta,
     supabase.from("cuotas").select("monto, pagado, ventas(cliente_id)").eq("pagada", false),
@@ -36,7 +36,7 @@ export default async function Clientes({ searchParams }: { searchParams: Promise
       {admin && (
         <form action={guardarCliente} className="card grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
           <input name="nombre" placeholder="Nombre *" required className="input" />
-          <input name="rut" placeholder="RUT" className="input" />
+          <input name="ruc" placeholder="RUC" className="input" />
           <input name="telefono" placeholder="Teléfono" className="input" />
           <input name="email" type="email" placeholder="Email" className="input" />
           <input name="direccion" placeholder="Dirección" className="input" />
@@ -45,7 +45,7 @@ export default async function Clientes({ searchParams }: { searchParams: Promise
       )}
 
       <form className="flex gap-2">
-        <input name="q" defaultValue={q} placeholder="Buscar por nombre, RUT o teléfono" className="input" />
+        <input name="q" defaultValue={q} placeholder="Buscar por nombre, RUC o teléfono" className="input" />
         <button className="btn-sec">Buscar</button>
       </form>
 
@@ -59,7 +59,7 @@ export default async function Clientes({ searchParams }: { searchParams: Promise
             <form key={c.id} action={guardarCliente} className="card grid gap-3 sm:grid-cols-3 lg:grid-cols-8">
               <input type="hidden" name="id" value={c.id} />
               <input name="nombre" defaultValue={c.nombre} required aria-label="Nombre" className="input" />
-              <input name="rut" defaultValue={c.rut ?? ""} aria-label="RUT" className="input" />
+              <input name="ruc" defaultValue={c.ruc ?? ""} aria-label="RUC" className="input" />
               <input name="telefono" defaultValue={c.telefono ?? ""} aria-label="Teléfono" className="input" />
               <input name="email" type="email" defaultValue={c.email ?? ""} aria-label="Email" className="input" />
               <input name="direccion" defaultValue={c.direccion ?? ""} aria-label="Dirección" className="input" />
@@ -71,7 +71,7 @@ export default async function Clientes({ searchParams }: { searchParams: Promise
             <div key={c.id} className="card flex flex-wrap items-center justify-between gap-2">
               <div>
                 <p className="font-medium">{c.nombre}</p>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">{[c.rut, c.telefono, c.email, c.direccion].filter(Boolean).join(" · ")}</p>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">{[c.ruc, c.telefono, c.email, c.direccion].filter(Boolean).join(" · ")}</p>
               </div>
               {saldo}
             </div>

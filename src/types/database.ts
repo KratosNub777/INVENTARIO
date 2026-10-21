@@ -40,7 +40,7 @@ export type Medio = "efectivo" | "transferencia" | "tarjeta";
 export interface Cliente {
   id: string;
   nombre: string;
-  rut: string | null;
+  ruc: string | null;
   telefono: string | null;
   email: string | null;
   direccion: string | null;
