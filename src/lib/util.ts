@@ -23,6 +23,7 @@ export const CATEGORIAS_INGRESO = ["Aporte de capital", "Otros ingresos"];
 
 // Fecha de hoy (YYYY-MM-DD) en Paraguay, para comparar con fechas de vencimiento.
 export const hoy = () => new Date().toLocaleDateString("en-CA", { timeZone: ZONA });
+export const enDias = (n: number) => new Date(Date.parse(hoy()) + n * 86_400_000).toISOString().slice(0, 10);
 
 // Días entre hoy y una fecha YYYY-MM-DD (negativo = ya pasó). Ambas se leen como medianoche UTC: la resta es exacta.
 export const diasPara = (fecha: string) => Math.round((Date.parse(fecha) - Date.parse(hoy())) / 86_400_000);
