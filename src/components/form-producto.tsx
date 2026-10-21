@@ -24,7 +24,7 @@ export function FormProducto({ action, categorias, proveedores, producto: p }: P
       {p && <input type="hidden" name="id" value={p.id} />}
       <Campo label="SKU *"><input name="sku" required defaultValue={p?.sku} className="input" /></Campo>
       <Campo label="Nombre *"><input name="nombre" required defaultValue={p?.nombre} className="input" /></Campo>
-      <Campo label="Código de barras"><input name="codigo_barras" defaultValue={p?.codigo_barras ?? ""} className="input" /></Campo>
+      <Campo label="Marca"><input name="marca" defaultValue={p?.marca ?? ""} className="input" /></Campo>
       <Campo label="Unidad">
         <input name="unidad" defaultValue={p?.unidad ?? "unid"} list="unidades" className="input" />
         <datalist id="unidades">
