@@ -17,13 +17,13 @@ export default async function Usuarios({ searchParams }: { searchParams: Promise
       </div>
       <Aviso error={error} />
 
-      <form action={invitarUsuario} className="card grid gap-3 sm:grid-cols-4">
+      <form action={invitarUsuario} className="card grid gap-4 sm:grid-cols-4">
         <input name="nombre" placeholder="Nombre" aria-label="Nombre" required className="input" />
         <input name="email" type="email" placeholder="Email" aria-label="Email" required className="input sm:col-span-2" />
         <button className="btn">Invitar</button>
       </form>
 
-      <div className="space-y-2 escalonado">
+      <div className="space-y-3 escalonado">
         {perfiles.map((u) => (
           <form key={u.id} action={actualizarUsuario} className="card flex items-center justify-between gap-3">
             <input type="hidden" name="id" value={u.id} />

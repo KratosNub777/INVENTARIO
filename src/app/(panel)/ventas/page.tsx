@@ -38,13 +38,13 @@ export default async function Ventas({ searchParams }: { searchParams: Promise<S
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h1 className="titulo">Ventas</h1>
       <Aviso error={sp.error} />
 
       <FormVenta productos={opciones} clientes={listaClientes} />
 
-      <form className="card grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <form className="card grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <select name="cliente" defaultValue={sp.cliente ?? ""} className="input">
           <option value="">Todos los clientes</option>
           {listaClientes.map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}

@@ -11,7 +11,7 @@ function Enlaces({ tipo }: { tipo: string }) {
 
 export default function Reportes() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h1 className="titulo">Reportes</h1>
 
       <section className="card space-y-3">
@@ -36,7 +36,7 @@ export default function Reportes() {
           <h2 className="font-semibold">Movimientos por período</h2>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">Deja las fechas vacías para exportar todo el historial.</p>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 sm:max-w-md">
+        <div className="grid gap-4 sm:grid-cols-2 sm:max-w-md">
           <label><span className="label">Desde</span><input name="desde" type="date" className="input" /></label>
           <label><span className="label">Hasta</span><input name="hasta" type="date" className="input" /></label>
         </div>

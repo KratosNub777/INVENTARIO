@@ -12,7 +12,7 @@ export default async function NuevoProducto({ searchParams }: { searchParams: Pr
     supabase.from("proveedores").select("*").order("nombre"),
   ]);
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h1 className="titulo">Nuevo producto</h1>
       <Aviso error={error} />
       <FormProducto

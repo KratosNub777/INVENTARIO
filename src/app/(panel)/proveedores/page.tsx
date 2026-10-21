@@ -11,12 +11,12 @@ export default async function Proveedores({ searchParams }: { searchParams: Prom
   const proveedores = (data ?? []) as Proveedor[];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h1 className="titulo">Proveedores</h1>
       <Aviso error={error} />
 
       {admin && (
-        <form action={guardarProveedor} className="card grid gap-3 sm:grid-cols-5">
+        <form action={guardarProveedor} className="card grid gap-4 sm:grid-cols-5">
           <input name="nombre" placeholder="Nombre *" required className="input" />
           <input name="contacto" placeholder="Contacto" className="input" />
           <input name="telefono" placeholder="Teléfono" className="input" />
@@ -25,10 +25,10 @@ export default async function Proveedores({ searchParams }: { searchParams: Prom
         </form>
       )}
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         {proveedores.map((v) =>
           admin ? (
-            <form key={v.id} action={guardarProveedor} className="card grid gap-3 sm:grid-cols-6">
+            <form key={v.id} action={guardarProveedor} className="card grid gap-4 sm:grid-cols-6">
               <input type="hidden" name="id" value={v.id} />
               <input name="nombre" defaultValue={v.nombre} required aria-label="Nombre" className="input" />
               <input name="contacto" defaultValue={v.contacto ?? ""} aria-label="Contacto" className="input" />

@@ -42,7 +42,7 @@ export function FormVenta({ productos, clientes }: { productos: OpcionProducto[]
 
   return (
     <form action={registrarVenta} className="card space-y-4">
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3">
         <label>
           <span className="label">Cliente {credito ? "*" : "(opcional)"}</span>
           <select name="cliente_id" defaultValue="" required={credito} className="input">
@@ -86,7 +86,7 @@ export function FormVenta({ productos, clientes }: { productos: OpcionProducto[]
       {credito && (
         <div className="space-y-3 rounded-xl border border-zinc-200 p-3 dark:border-zinc-800">
           <input type="hidden" name="cuotas" value={JSON.stringify(cuotas.map((c) => ({ monto: Number(c.monto), vence: c.vence })))} />
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-3">
             <label>
               <span className="label">Precio total a cuotas (con interés)</span>
               <CampoDinero

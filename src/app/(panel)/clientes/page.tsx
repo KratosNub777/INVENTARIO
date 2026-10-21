@@ -30,12 +30,12 @@ export default async function Clientes({ searchParams }: { searchParams: Promise
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h1 className="titulo">Clientes</h1>
       <Aviso error={error} />
 
       {admin && (
-        <form action={guardarCliente} className="card grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <form action={guardarCliente} className="card grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <input name="nombre" placeholder="Nombre *" required className="input" />
           <input name="ruc" placeholder="RUC" className="input" />
           <input name="telefono" placeholder="Teléfono" className="input" />
@@ -51,7 +51,7 @@ export default async function Clientes({ searchParams }: { searchParams: Promise
         <button className="btn-sec">Buscar</button>
       </form>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         {clientes.map((c) => {
           const debe = deuda.get(c.id) ?? 0;
           const saldo = debe > 0 && (
@@ -63,7 +63,7 @@ export default async function Clientes({ searchParams }: { searchParams: Promise
             </a>
           );
           return admin ? (
-            <form key={c.id} action={guardarCliente} className="card grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <form key={c.id} action={guardarCliente} className="card grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <input type="hidden" name="id" value={c.id} />
               <input name="nombre" defaultValue={c.nombre} required aria-label="Nombre" className="input" />
               <input name="ruc" defaultValue={c.ruc ?? ""} aria-label="RUC" placeholder="RUC" className="input" />

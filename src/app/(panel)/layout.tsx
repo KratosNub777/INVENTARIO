@@ -17,7 +17,7 @@ function AvisoCuotas({ vences }: { vences: string[] }) {
   return (
     <Link
       href="/cobranza"
-      className="entrada mb-4 flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-900 hover:underline dark:border-amber-900 dark:bg-amber-950/60 dark:text-amber-200"
+      className="entrada mb-6 flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-900 hover:underline dark:border-amber-900 dark:bg-amber-950/60 dark:text-amber-200"
     >
       <BellRinging size={18} weight="fill" className="shrink-0" />
       {partes.join(" · ")}. Ver cobranza
@@ -61,7 +61,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
         </form>
       </header>
 
-      <main className="min-w-0 flex-1 p-4 pb-24 md:p-8">
+      <main className="min-w-0 flex-1 p-4 pb-24 sm:p-6 md:p-10">
         <div className="mx-auto max-w-6xl">
           <AvisoCuotas vences={((cuotas ?? []) as { vence: string }[]).map((c) => c.vence)} />
           {children}

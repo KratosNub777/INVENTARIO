@@ -53,7 +53,7 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
       </div>
       <Aviso error={error} />
 
-      <div className="escalonado grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="escalonado grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {tarjetas.map(({ titulo, valor, Icono, moneda, alerta }) => (
           <div key={titulo} className="card flex items-start justify-between gap-3 transition duration-200 hover:-translate-y-0.5 hover:shadow-md">
             <div className="min-w-0">

@@ -11,22 +11,22 @@ export default async function Categorias({ searchParams }: { searchParams: Promi
   const categorias = (data ?? []) as Categoria[];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h1 className="titulo">Categorías</h1>
       <Aviso error={error} />
 
       {admin && (
-        <form action={guardarCategoria} className="card grid gap-3 sm:grid-cols-3">
+        <form action={guardarCategoria} className="card grid gap-4 sm:grid-cols-3">
           <input name="nombre" placeholder="Nombre *" required className="input" />
           <input name="descripcion" placeholder="Descripción" className="input" />
           <button className="btn">Agregar</button>
         </form>
       )}
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         {categorias.map((c) =>
           admin ? (
-            <form key={c.id} action={guardarCategoria} className="card grid gap-3 sm:grid-cols-4">
+            <form key={c.id} action={guardarCategoria} className="card grid gap-4 sm:grid-cols-4">
               <input type="hidden" name="id" value={c.id} />
               <input name="nombre" defaultValue={c.nombre} required aria-label="Nombre" className="input" />
               <input name="descripcion" defaultValue={c.descripcion ?? ""} aria-label="Descripción" className="input sm:col-span-1" />
