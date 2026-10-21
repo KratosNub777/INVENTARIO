@@ -22,7 +22,7 @@ export default async function Cobranza({ searchParams }: { searchParams: Promise
   const { data: clientes } = await supabase.from("clientes").select("id, nombre").eq("activo", true).order("nombre");
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="titulo">Cobranza</h1>
@@ -35,7 +35,7 @@ export default async function Cobranza({ searchParams }: { searchParams: Promise
       </div>
       <Aviso error={sp.error} />
 
-      <form className="card grid gap-3 sm:grid-cols-3">
+      <form className="card grid gap-4 sm:grid-cols-3">
         {calendario && <input type="hidden" name="vista" value="calendario" />}
         {sp.mes && <input type="hidden" name="mes" value={sp.mes} />}
         <select name="cliente" defaultValue={sp.cliente ?? ""} className="input">
@@ -81,7 +81,7 @@ async function Lista({ sp, estado, admin }: { sp: SP; estado: string; admin: boo
 
   return (
     <>
-      <div className="escalonado grid gap-3 sm:grid-cols-3">
+      <div className="escalonado grid gap-4 sm:grid-cols-3">
         <div className="card">
           <p className="text-sm text-zinc-600 dark:text-zinc-400">Por cobrar</p>
           <p className="mt-1 text-2xl font-semibold tabular-nums">{dinero(porCobrar)}</p>

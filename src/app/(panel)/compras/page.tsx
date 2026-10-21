@@ -38,7 +38,7 @@ export default async function Compras({ searchParams }: { searchParams: Promise<
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
         <h1 className="titulo">Compras</h1>
         <p className="subtitulo">Mercadería comprada por la bodega. Suma stock, actualiza el costo y descuenta de caja.</p>
@@ -46,7 +46,7 @@ export default async function Compras({ searchParams }: { searchParams: Promise<
       <Aviso error={sp.error} />
 
       <form action={registrarCompra} className="card space-y-4">
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-3">
           <label>
             <span className="label">Proveedor (opcional)</span>
             <select name="proveedor_id" defaultValue="" className="input">
@@ -69,7 +69,7 @@ export default async function Compras({ searchParams }: { searchParams: Promise<
         <button className="btn">Registrar compra</button>
       </form>
 
-      <form className="card grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <form className="card grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <select name="proveedor" defaultValue={sp.proveedor ?? ""} className="input">
           <option value="">Todos los proveedores</option>
           {listaProveedores.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}

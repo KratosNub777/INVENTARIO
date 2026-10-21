@@ -34,7 +34,7 @@ export default async function DetalleProducto({
   const historial = (movs ?? []) as (Movimiento & { perfiles: { nombre: string } | null })[];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="titulo">{p.nombre}</h1>
         <div className="flex gap-2">

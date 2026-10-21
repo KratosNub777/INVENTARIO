@@ -58,7 +58,7 @@ export default async function Productos({ searchParams }: { searchParams: Promis
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="titulo">Productos</h1>
         <Link href="/productos/nuevo" className="btn">Nuevo producto</Link>

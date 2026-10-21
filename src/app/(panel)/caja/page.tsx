@@ -65,7 +65,7 @@ export default async function Caja({ searchParams }: { searchParams: Promise<SP>
       </div>
       <Aviso error={sp.error} />
 
-      <div className="escalonado grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="escalonado grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {MEDIOS.map((m) => (
           <div key={m} className="card">
             <p className="text-sm capitalize text-zinc-600 dark:text-zinc-400">Saldo {m}</p>
@@ -110,7 +110,7 @@ export default async function Caja({ searchParams }: { searchParams: Promise<SP>
 
         <section className="card space-y-3">
           <h2 className="font-semibold">Registrar ingreso o gasto</h2>
-          <form action={registrarMovimientoCaja} className="grid gap-3 sm:grid-cols-2">
+          <form action={registrarMovimientoCaja} className="grid gap-4 sm:grid-cols-2">
             <select name="tipo" aria-label="Tipo" className="input">
               <option value="egreso">Gasto / egreso</option>
               <option value="ingreso">Ingreso</option>
@@ -133,7 +133,7 @@ export default async function Caja({ searchParams }: { searchParams: Promise<SP>
         </section>
       </div>
 
-      <form className="card grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <form className="card grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <input name="desde" type="date" defaultValue={desde} aria-label="Desde" className="input" />
         <input name="hasta" type="date" defaultValue={hasta} aria-label="Hasta" className="input" />
         <select name="tipo" defaultValue={sp.tipo ?? ""} className="input">

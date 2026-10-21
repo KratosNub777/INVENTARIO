@@ -32,7 +32,7 @@ export default async function Movimientos({ searchParams }: { searchParams: Prom
   const lista = (productos ?? []) as Pick<Producto, "id" | "sku" | "nombre" | "unidad">[];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h1 className="titulo">Movimientos</h1>
       <Aviso error={sp.error} />
 
@@ -68,7 +68,7 @@ export default async function Movimientos({ searchParams }: { searchParams: Prom
         </div>
       </form>
 
-      <form className="card grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+      <form className="card grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
         <select name="producto" defaultValue={sp.producto ?? ""} className="input">
           <option value="">Todos los productos</option>
           {lista.map((p) => <option key={p.id} value={p.id}>{p.nombre}</option>)}
