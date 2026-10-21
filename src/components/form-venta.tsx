@@ -16,12 +16,14 @@ function sumarMeses(base: string, meses: number) {
   return new Date(Date.UTC(a, m - 1 + meses, Math.min(d, ultimo))).toISOString().slice(0, 10);
 }
 
-// Reparte el total en partes iguales en pesos enteros; la última cuota absorbe el redondeo.
+// Reparte el total en cuotas iguales. Si cada cuota pasa de 5.000 se redondea hacia arriba al millar (el total sube un poco);
+// si es menor, reparte en guaraníes enteros y la última cuota absorbe el resto.
 function repartir(total: number, n: number, primera: string): CuotaForm[] {
   if (!(total > 0) || !(n >= 1) || !primera) return [];
-  const base = Math.floor(total / n);
+  const redondea = total / n >= 5000;
+  const base = redondea ? Math.ceil(total / n / 1000) * 1000 : Math.floor(total / n);
   return Array.from({ length: n }, (_, i) => ({
-    monto: String(i === n - 1 ? total - base * (n - 1) : base),
+    monto: String(!redondea && i === n - 1 ? total - base * (n - 1) : base),
     vence: sumarMeses(primera, i),
   }));
 }
@@ -35,7 +37,12 @@ export function FormVenta({ productos, clientes }: { productos: OpcionProducto[]
   const [cuotas, setCuotas] = useState<CuotaForm[]>([]);
   const onTotal = useCallback((t: number) => setTotalProductos(t), []);
 
-  const regenerar = (t: string, cant: string, f: string) => setCuotas(repartir(Number(t), Number(cant), f));
+  // ajustar: deja el precio total igual a la suma de las cuotas ya redondeadas.
+  const regenerar = (t: string, cant: string, f: string, ajustar = false) => {
+    const nuevas = repartir(Number(t), Number(cant), f);
+    setCuotas(nuevas);
+    if (ajustar && nuevas.length) setTotalCredito(String(nuevas.reduce((s, c) => s + Number(c.monto), 0)));
+  };
   const credito = tipo === "credito";
   const sumaCuotas = cuotas.reduce((s, c) => s + Number(c.monto || 0), 0);
   const ultima = cuotas.map((c) => c.vence).filter(Boolean).sort().at(-1);
@@ -62,7 +69,7 @@ export function FormVenta({ productos, clientes }: { productos: OpcionProducto[]
                     setTipo(t);
                     if (t === "credito" && !totalCredito && totalProductos > 0) {
                       setTotalCredito(String(totalProductos));
-                      regenerar(String(totalProductos), n, primera);
+                      regenerar(String(totalProductos), n, primera, true);
                     }
                   }}
                 />
@@ -92,13 +99,14 @@ export function FormVenta({ productos, clientes }: { productos: OpcionProducto[]
               <CampoDinero
                 required value={totalCredito}
                 onValor={(v) => { setTotalCredito(v); regenerar(v, n, primera); }}
+                onBlur={() => cuotas.length && setTotalCredito(String(sumaCuotas))}
               />
             </label>
             <label>
               <span className="label">Número de cuotas (mensuales)</span>
               <input
                 type="number" min="1" max="60" step="1" required value={n} className="input"
-                onChange={(e) => { setN(e.target.value); regenerar(totalCredito, e.target.value, primera); }}
+                onChange={(e) => { setN(e.target.value); regenerar(totalCredito, e.target.value, primera, true); }}
               />
             </label>
             <label>
@@ -113,7 +121,7 @@ export function FormVenta({ productos, clientes }: { productos: OpcionProducto[]
           {cuotas.length > 0 && (
             <>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Compra el {fecha(hoy())} · termina de pagar el {ultima ? fecha(ultima) : "-"} · puedes ajustar cada cuota.
+                Compra el {fecha(hoy())} · termina de pagar el {ultima ? fecha(ultima) : "-"} · las cuotas se redondean al millar hacia arriba · puedes ajustar cada una.
               </p>
               <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                 {cuotas.map((c, i) => (
