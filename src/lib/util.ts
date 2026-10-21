@@ -30,4 +30,6 @@ export function textoVence(fecha: string) {
   return d === -1 ? "Vencida hace 1 día" : `Vencida hace ${-d} días`;
 }
 
-export const fecha = (s: string) => s.slice(0, 10).split("-").reverse().join("-");
+// dd-mm-aaaa. Una fecha pura (YYYY-MM-DD) se muestra tal cual; un timestamp, en hora de Chile.
+export const fecha = (s: string) =>
+  (s.length > 10 ? new Date(s).toLocaleDateString("en-CA", { timeZone: "America/Santiago" }) : s).split("-").reverse().join("-");
