@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Package } from "@phosphor-icons/react/dist/ssr";
+import { Package, Warning } from "@phosphor-icons/react/dist/ssr";
 import { Aviso } from "@/components/aviso";
 import { Vacio } from "@/components/vacio";
 import { getSesion } from "@/lib/auth";
@@ -65,20 +65,23 @@ export default async function Productos({ searchParams }: { searchParams: Promis
       </div>
       <Aviso error={sp.error} />
 
-      <form className="card grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        <input name="q" defaultValue={sp.q} placeholder="Buscar nombre o SKU" className="input" />
-        <select name="categoria" defaultValue={sp.categoria ?? ""} className="input">
+      <form className="card flex flex-wrap items-center gap-3">
+        <input name="q" defaultValue={sp.q} placeholder="Buscar nombre o SKU" className="input min-w-48 flex-1" />
+        <select name="categoria" defaultValue={sp.categoria ?? ""} className="input w-full sm:w-52">
           <option value="">Todas las categorías</option>
           {((categorias ?? []) as Categoria[]).map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}
         </select>
-        <select name="proveedor" defaultValue={sp.proveedor ?? ""} className="input">
+        <select name="proveedor" defaultValue={sp.proveedor ?? ""} className="input w-full sm:w-52">
           <option value="">Todos los proveedores</option>
           {((proveedores ?? []) as Proveedor[]).map((v) => <option key={v.id} value={v.id}>{v.nombre}</option>)}
         </select>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" name="bajo" value="1" defaultChecked={!!sp.bajo} /> Solo stock bajo
+        <label className="cursor-pointer select-none">
+          <input type="checkbox" name="bajo" value="1" defaultChecked={!!sp.bajo} className="peer sr-only" />
+          <span className="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 peer-checked:border-red-300 peer-checked:bg-red-50 peer-checked:text-red-800 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-emerald-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:peer-checked:border-red-900 dark:peer-checked:bg-red-950 dark:peer-checked:text-red-300">
+            <Warning size={16} weight="bold" /> Stock bajo
+          </span>
         </label>
-        <button className="btn-sec">Filtrar</button>
+        <button className="btn">Filtrar</button>
       </form>
 
       <div className="card overflow-x-auto p-0">
