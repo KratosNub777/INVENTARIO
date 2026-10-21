@@ -44,6 +44,10 @@ export const clienteSchema = z.object({
   telefono: texto,
   email: z.string().trim().default("").pipe(z.union([z.literal(""), z.email("Email inválido")])).transform((v) => v || null),
   direccion: texto,
+  // Solo http(s): el link se muestra como href y un "javascript:" sería inseguro.
+  direccion_url: z.string().trim().default("")
+    .pipe(z.union([z.literal(""), z.url({ protocol: /^https?$/, message: "El link debe empezar con http:// o https://" })]))
+    .transform((v) => v || null),
 });
 
 // Listas que el formulario manda como JSON en un input oculto.

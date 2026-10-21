@@ -44,6 +44,7 @@ export interface Cliente {
   telefono: string | null;
   email: string | null;
   direccion: string | null;
+  direccion_url: string | null;
   activo: boolean;
 }
 
