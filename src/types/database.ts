@@ -34,3 +34,69 @@ export interface Movimiento {
   usuario_id: string | null;
   created_at: string;
 }
+
+export type Medio = "efectivo" | "transferencia" | "tarjeta";
+
+export interface Cliente {
+  id: string;
+  nombre: string;
+  rut: string | null;
+  telefono: string | null;
+  email: string | null;
+  direccion: string | null;
+  activo: boolean;
+}
+
+export interface Venta {
+  id: string;
+  numero: number;
+  cliente_id: string | null;
+  tipo_pago: "contado" | "credito";
+  medio: Medio | null;
+  total: number;
+  nota: string | null;
+  usuario_id: string | null;
+  created_at: string;
+}
+
+export interface Cuota {
+  id: string;
+  venta_id: string;
+  numero: number;
+  monto: number;
+  vence: string;
+  pagado: number;
+  pagada: boolean;
+}
+
+export interface Compra {
+  id: string;
+  numero: number;
+  proveedor_id: string | null;
+  medio: Medio;
+  total: number;
+  nota: string | null;
+  usuario_id: string | null;
+  created_at: string;
+}
+
+export interface MovimientoCaja {
+  id: string;
+  tipo: "ingreso" | "egreso";
+  monto: number;
+  medio: Medio;
+  categoria: string;
+  concepto: string | null;
+  usuario_id: string | null;
+  created_at: string;
+}
+
+export interface Caja {
+  id: string;
+  abierta_at: string;
+  monto_inicial: number;
+  cerrada_at: string | null;
+  contado: number | null;
+  esperado: number | null;
+  diferencia: number | null;
+}
