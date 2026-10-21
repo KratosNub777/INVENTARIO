@@ -38,6 +38,72 @@ export const proveedorSchema = z.object({
   email: z.string().trim().default("").pipe(z.union([z.literal(""), z.email("Email inválido")])).transform((v) => v || null),
 });
 
+export const clienteSchema = z.object({
+  nombre: z.string().trim().min(1, "El nombre es obligatorio"),
+  rut: texto,
+  telefono: texto,
+  email: z.string().trim().default("").pipe(z.union([z.literal(""), z.email("Email inválido")])).transform((v) => v || null),
+  direccion: texto,
+});
+
+// Listas que el formulario manda como JSON en un input oculto.
+const json = <T extends z.ZodType>(schema: T) =>
+  z.string().default("[]").transform((s, ctx) => {
+    try {
+      return JSON.parse(s);
+    } catch {
+      ctx.addIssue({ code: "custom", message: "Datos inválidos" });
+      return z.NEVER;
+    }
+  }).pipe(schema);
+
+const medio = z.enum(["efectivo", "transferencia", "tarjeta"], { message: "Medio de pago inválido" });
+const fechaISO = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Fecha inválida");
+const lineas = json(z.array(z.object({
+  producto_id: z.string().uuid("Elige un producto en cada línea"),
+  cantidad: z.number().positive("La cantidad debe ser mayor a 0"),
+  precio: z.number().min(0, "El precio no puede ser negativo"),
+})).min(1, "Agrega al menos un producto"));
+
+export const ventaSchema = z.object({
+  cliente_id: id,
+  tipo_pago: z.enum(["contado", "credito"]),
+  medio: medio.optional(),
+  items: lineas,
+  cuotas: json(z.array(z.object({ monto: z.number().positive("Cada cuota debe ser mayor a 0"), vence: fechaISO }))),
+  nota: texto,
+});
+
+export const compraSchema = z.object({
+  proveedor_id: id,
+  medio,
+  items: lineas,
+  nota: texto,
+});
+
+export const abonoSchema = z.object({
+  cuota_id: z.string().uuid(),
+  // vacío = paga todo el saldo
+  monto: z.string().trim().default("").transform((v) => (v ? Number(v) : null)).refine((v) => v === null || v > 0, "Monto inválido"),
+  medio,
+});
+
+export const cuotaSchema = z.object({
+  id: z.string().uuid(),
+  monto: z.coerce.number({ message: "Número inválido" }).positive("El monto debe ser mayor a 0"),
+  vence: fechaISO,
+});
+
+export const movimientoCajaSchema = z.object({
+  tipo: z.enum(["ingreso", "egreso"]),
+  monto: z.coerce.number({ message: "Número inválido" }).positive("El monto debe ser mayor a 0"),
+  medio,
+  categoria: z.string().trim().min(1, "Elige una categoría"),
+  concepto: texto,
+});
+
+export const montoSchema = z.object({ monto: numero });
+
 export const invitacionSchema = z.object({
   email: z.email("Email inválido"),
   nombre: z.string().trim().min(1, "El nombre es obligatorio"),
