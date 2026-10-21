@@ -46,7 +46,7 @@
   /* Combo box: flecha propia y lista desplegable estilada (appearance: base-select, Chromium).
      shortcut: Firefox/Safari conservan la lista nativa, solo se estiliza el campo; subir cuando soporten base-select. */
   select.input {
-    @apply cursor-pointer appearance-none pr-9;
+    @apply cursor-pointer appearance-none overflow-hidden text-ellipsis whitespace-nowrap pr-9;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='%2371717a'%3E%3Cpath d='M213.66 101.66l-80 80a8 8 0 0 1-11.32 0l-80-80a8 8 0 0 1 11.32-11.32L128 164.69l74.34-74.35a8 8 0 0 1 11.32 11.32Z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.75rem center;

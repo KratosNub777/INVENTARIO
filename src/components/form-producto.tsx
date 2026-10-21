@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Categoria, Producto, Proveedor } from "@/types/database";
 
 type Props = {
@@ -52,8 +53,9 @@ export function FormProducto({ action, categorias, proveedores, producto: p }: P
       <Campo label="Descripción" className="sm:col-span-2">
         <textarea name="descripcion" rows={3} defaultValue={p?.descripcion ?? ""} className="input" />
       </Campo>
-      <div className="sm:col-span-2">
+      <div className="flex gap-2 sm:col-span-2">
         <button className="btn">{p ? "Guardar cambios" : "Crear producto"}</button>
+        <Link href="/productos" className="btn-sec">Cancelar</Link>
       </div>
     </form>
   );
