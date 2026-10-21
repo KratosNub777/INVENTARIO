@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getSesion } from "@/lib/auth";
+import { getSesion, requireAdmin } from "@/lib/auth";
 import { fallar } from "@/lib/util";
 import { validar, ventaSchema } from "@/lib/validaciones";
 
@@ -26,4 +26,14 @@ export async function registrarVenta(formData: FormData) {
 
   revalidatePath("/", "layout");
   redirect(credito ? "/cobranza" : "/ventas");
+}
+
+// Devuelve el stock y borra la venta con sus cuotas y movimientos de caja (RPC eliminar_venta).
+export async function eliminarVenta(formData: FormData) {
+  const { supabase } = await requireAdmin();
+  const { error } = await supabase.rpc("eliminar_venta", { p_venta_id: String(formData.get("id")) });
+  if (error) fallar("/ventas", error.message);
+
+  revalidatePath("/", "layout");
+  redirect("/ventas");
 }

@@ -1,5 +1,8 @@
 import Link from "next/link";
+import { Trash } from "@phosphor-icons/react/dist/ssr";
+import { eliminarVenta } from "@/actions/ventas";
 import { Aviso } from "@/components/aviso";
+import { BotonConfirmar } from "@/components/boton-confirmar";
 import { FormVenta } from "@/components/form-venta";
 import { getSesion } from "@/lib/auth";
 import { cantidad, dinero, fechaHora } from "@/lib/util";
@@ -14,7 +17,8 @@ type Fila = Venta & {
 
 export default async function Ventas({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
-  const { supabase } = await getSesion();
+  const { supabase, perfil } = await getSesion();
+  const admin = perfil.rol === "admin";
 
   let consulta = supabase
     .from("ventas")
@@ -64,7 +68,7 @@ export default async function Ventas({ searchParams }: { searchParams: Promise<S
 
       <div className="card overflow-x-auto p-0">
         <table className="tabla">
-          <thead><tr><th>N°</th><th>Fecha</th><th>Cliente</th><th>Productos</th><th>Pago</th><th>Total</th><th>Usuario</th></tr></thead>
+          <thead><tr><th>N°</th><th>Fecha</th><th>Cliente</th><th>Productos</th><th>Pago</th><th>Total</th><th>Usuario</th>{admin && <th></th>}</tr></thead>
           <tbody>
             {filas.map((v) => (
               <tr key={v.id}>
@@ -81,9 +85,22 @@ export default async function Ventas({ searchParams }: { searchParams: Promise<S
                 </td>
                 <td className="tabular-nums">{dinero(v.total)}</td>
                 <td>{v.perfiles?.nombre ?? "-"}</td>
+                {admin && (
+                  <td>
+                    <form action={eliminarVenta}>
+                      <input type="hidden" name="id" value={v.id} />
+                      <BotonConfirmar
+                        className="btn-sec px-2 text-red-700 dark:text-red-400"
+                        mensaje={`¿Eliminar la venta #${v.numero}? Se devuelve el stock y se borran sus cuotas y cobros de caja. No se puede deshacer.`}
+                      >
+                        <Trash size={16} /> Eliminar
+                      </BotonConfirmar>
+                    </form>
+                  </td>
+                )}
               </tr>
             ))}
-            {!filas.length && <tr><td colSpan={7} className="py-6 text-center text-zinc-600 dark:text-zinc-400">Sin ventas</td></tr>}
+            {!filas.length && <tr><td colSpan={admin ? 8 : 7} className="py-6 text-center text-zinc-600 dark:text-zinc-400">Sin ventas</td></tr>}
           </tbody>
         </table>
       </div>
