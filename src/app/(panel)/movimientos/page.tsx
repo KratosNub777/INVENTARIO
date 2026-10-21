@@ -36,31 +36,36 @@ export default async function Movimientos({ searchParams }: { searchParams: Prom
       <h1 className="titulo">Movimientos</h1>
       <Aviso error={sp.error} />
 
-      <form action={registrarMovimiento} className="card grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        <label className="lg:col-span-2">
+      <form action={registrarMovimiento} className="card grid gap-x-4 gap-y-5 p-5 sm:grid-cols-2 lg:grid-cols-12">
+        <label className="sm:col-span-2 lg:col-span-4">
           <span className="label">Producto</span>
           <select name="producto_id" required defaultValue={sp.producto ?? ""} className="input">
             <option value="" disabled>Elige un producto</option>
             {lista.map((p) => <option key={p.id} value={p.id}>{p.sku} · {p.nombre}</option>)}
           </select>
         </label>
-        <label>
+        <label className="lg:col-span-2">
           <span className="label">Tipo</span>
           <select name="tipo" className="input">
-            <option value="entrada">Entrada (compra / reposición)</option>
-            <option value="salida">Salida (venta / uso)</option>
-            <option value="ajuste">Ajuste (conteo físico)</option>
+            <option value="entrada">Entrada</option>
+            <option value="salida">Salida</option>
+            <option value="ajuste">Ajuste</option>
           </select>
         </label>
-        <label>
-          <span className="label">Cantidad (en ajuste: stock contado)</span>
+        <label className="lg:col-span-2">
+          <span className="label">Cantidad</span>
           <input name="cantidad" type="number" min="0" step="any" required className="input" />
         </label>
-        <label>
+        <label className="sm:col-span-2 lg:col-span-4">
           <span className="label">Motivo</span>
-          <input name="motivo" className="input" />
+          <input name="motivo" placeholder="Opcional" className="input" />
         </label>
-        <div className="sm:col-span-2 lg:col-span-5"><button className="btn">Registrar movimiento</button></div>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 sm:col-span-2 lg:col-span-12">
+          <button className="btn">Registrar movimiento</button>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400">
+            Entrada: compra o reposición. Salida: venta o uso. Ajuste: la cantidad es el stock contado.
+          </p>
+        </div>
       </form>
 
       <form className="card grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
