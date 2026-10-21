@@ -28,7 +28,7 @@ export default async function Productos({ searchParams }: { searchParams: Promis
 
   // Quita caracteres que rompen la sintaxis del filtro .or() de PostgREST.
   const q = (sp.q ?? "").replace(/[,()%*\\]/g, " ").trim();
-  if (q) consulta = consulta.or(`nombre.ilike.%${q}%,sku.ilike.%${q}%`);
+  if (q) consulta = consulta.or(`nombre.ilike.%${q}%,sku.ilike.%${q}%,marca.ilike.%${q}%`);
   if (sp.categoria) consulta = consulta.eq("categoria_id", sp.categoria);
   if (sp.proveedor) consulta = consulta.eq("proveedor_id", sp.proveedor);
   if (sp.bajo) {
@@ -66,7 +66,7 @@ export default async function Productos({ searchParams }: { searchParams: Promis
       <Aviso error={sp.error} />
 
       <form className="card flex flex-wrap items-center gap-3">
-        <input name="q" defaultValue={sp.q} placeholder="Buscar nombre o SKU" className="input min-w-48 flex-1" />
+        <input name="q" defaultValue={sp.q} placeholder="Buscar nombre, marca o SKU" className="input min-w-48 flex-1" />
         <select name="categoria" defaultValue={sp.categoria ?? ""} className="input w-full sm:w-52">
           <option value="">Todas las categorías</option>
           {((categorias ?? []) as Categoria[]).map((c) => <option key={c.id} value={c.id}>{c.nombre}</option>)}

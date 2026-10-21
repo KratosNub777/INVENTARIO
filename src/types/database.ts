@@ -8,7 +8,7 @@ export interface Proveedor { id: string; nombre: string; contacto: string | null
 export interface Producto {
   id: string;
   sku: string;
-  codigo_barras: string | null;
+  marca: string | null;
   nombre: string;
   descripcion: string | null;
   categoria_id: string | null;

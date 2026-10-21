@@ -8,7 +8,7 @@ const numero = z.coerce.number({ message: "Número inválido" }).min(0, "No pued
 export const productoSchema = z.object({
   sku: z.string().trim().min(1, "El SKU es obligatorio"),
   nombre: z.string().trim().min(1, "El nombre es obligatorio"),
-  codigo_barras: texto,
+  marca: texto,
   descripcion: texto,
   ubicacion: texto,
   categoria_id: id,
