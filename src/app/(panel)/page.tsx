@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { ArrowsLeftRight, CheckCircle, CurrencyDollar, Package, Tag, Warning } from "@phosphor-icons/react/dist/ssr";
 import { Aviso } from "@/components/aviso";
+import { EstadoCuota } from "@/components/estado-cuota";
 import { Contador } from "@/components/contador";
 import { Vacio } from "@/components/vacio";
 import { getSesion } from "@/lib/auth";
-import { cantidad, fechaHora } from "@/lib/util";
-import type { Movimiento } from "@/types/database";
+import { cantidad, dinero, fecha, fechaHora } from "@/lib/util";
+import type { Cuota, Movimiento } from "@/types/database";
 
 type Resumen = { total_productos: number; valor_costo: number; valor_venta: number };
 type Bajo = { id: string; sku: string; nombre: string; unidad: string; stock_actual: number; stock_minimo: number };
+type PorCobrar = Cuota & { ventas: { id: string; numero: number; clientes: { nombre: string } | null } | null };
 type Fila = Movimiento & { productos: { nombre: string } | null; perfiles: { nombre: string } | null };
 
 const colorTipo = { entrada: "chip-ok", salida: "chip-alerta", ajuste: "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200" };
@@ -16,7 +18,7 @@ const colorTipo = { entrada: "chip-ok", salida: "chip-alerta", ajuste: "bg-zinc-
 export default async function Dashboard({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const { error } = await searchParams;
   const { supabase, perfil } = await getSesion();
-  const [{ data: resumen }, { data: bajos }, { data: movs }] = await Promise.all([
+  const [{ data: resumen }, { data: bajos }, { data: movs }, { data: cobrar }] = await Promise.all([
     supabase.from("v_valor_inventario").select("*").single(),
     supabase.from("v_stock_bajo").select("*"),
     supabase
@@ -24,7 +26,14 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
       .select("*, productos(nombre), perfiles(nombre)")
       .order("created_at", { ascending: false })
       .limit(8),
+    supabase
+      .from("cuotas")
+      .select("*, ventas(id, numero, clientes(nombre))")
+      .eq("pagada", false)
+      .order("vence")
+      .limit(8),
   ]);
+  const porCobrar = (cobrar ?? []) as PorCobrar[];
   const r = (resumen ?? { total_productos: 0, valor_costo: 0, valor_venta: 0 }) as Resumen;
   const stockBajo = (bajos ?? []) as Bajo[];
   const movimientos = (movs ?? []) as Fila[];
@@ -65,6 +74,30 @@ export default async function Dashboard({ searchParams }: { searchParams: Promis
           </div>
         ))}
       </div>
+
+      {porCobrar.length > 0 && (
+        <section className="space-y-3">
+          <h2 className="font-semibold">Próximas cuotas por cobrar</h2>
+          <div className="card overflow-x-auto p-0">
+            <table className="tabla">
+              <thead><tr><th>Cliente</th><th>Cuota</th><th>Vence</th><th>Saldo</th><th>Estado</th></tr></thead>
+              <tbody>
+                {porCobrar.map((c) => (
+                  <tr key={c.id}>
+                    <td>
+                      <Link href={`/cobranza?venta=${c.ventas?.id}`} className="font-medium hover:underline">{c.ventas?.clientes?.nombre ?? "-"}</Link>
+                    </td>
+                    <td className="tabular-nums">{c.numero} · venta #{c.ventas?.numero}</td>
+                    <td className="whitespace-nowrap">{fecha(c.vence)}</td>
+                    <td className="tabular-nums">{dinero(Number(c.monto) - Number(c.pagado))}</td>
+                    <td><EstadoCuota vence={c.vence} pagada={c.pagada} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="space-y-3">
