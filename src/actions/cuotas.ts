@@ -17,6 +17,7 @@ export async function abonarCuota(formData: FormData) {
   const { supabase } = await getSesion();
   const ruta = volver(formData);
   const datos = validar(abonoSchema, formData, ruta);
+  if (!formData.get("todo") && datos.monto === null) fallar(ruta, "Escribe el monto del abono");
   const { error } = await supabase.rpc("abonar_cuota", {
     p_cuota_id: datos.cuota_id,
     p_monto: formData.get("todo") ? null : datos.monto,
