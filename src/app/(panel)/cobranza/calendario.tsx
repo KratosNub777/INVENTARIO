@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
 import { getSesion } from "@/lib/auth";
-import { dinero, diasPara, hoy } from "@/lib/util";
+import { dinero, diasPara, hoy, LOCALE } from "@/lib/util";
 import type { Cuota } from "@/types/database";
 import { type SP, urlCobranza } from "./url";
 
@@ -36,7 +36,7 @@ export async function Calendario({ sp, estado }: { sp: SP; estado: string }) {
     porDia.set(d, [...(porDia.get(d) ?? []), c]);
   }
   const celdas = [...Array(offset).fill(null), ...Array.from({ length: diasMes }, (_, i) => i + 1)];
-  const titulo = new Date(Date.UTC(a, m - 1, 1)).toLocaleDateString("es-CL", { month: "long", year: "numeric", timeZone: "UTC" });
+  const titulo = new Date(Date.UTC(a, m - 1, 1)).toLocaleDateString(LOCALE, { month: "long", year: "numeric", timeZone: "UTC" });
   const hoyStr = hoy();
 
   return (

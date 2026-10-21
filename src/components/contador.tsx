@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { dinero, LOCALE } from "@/lib/util";
 
 // Cuenta desde 0 hasta el valor al cargar. Escribe directo en el nodo de texto (sin estado de React).
 export function Contador({ valor, moneda = false }: { valor: number; moneda?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
   const formato = (n: number) =>
-    moneda
-      ? new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 }).format(n)
-      : Math.round(n).toLocaleString("es-CL");
+    moneda ? dinero(n) : Math.round(n).toLocaleString(LOCALE);
 
   useEffect(() => {
     const nodo = ref.current?.firstChild;
