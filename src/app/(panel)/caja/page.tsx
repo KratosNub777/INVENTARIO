@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { abrirCaja, cerrarCaja, registrarMovimientoCaja } from "@/actions/caja";
 import { Aviso } from "@/components/aviso";
+import { CampoDinero } from "@/components/campo-dinero";
 import { getSesion } from "@/lib/auth";
 import { CATEGORIAS_GASTO, CATEGORIAS_INGRESO, dinero, fechaHora, hoy, MEDIOS } from "@/lib/util";
 import type { Caja as CajaDia, MovimientoCaja } from "@/types/database";
@@ -89,18 +90,20 @@ export default async function Caja({ searchParams }: { searchParams: Promise<SP>
               <form action={cerrarCaja} className="flex flex-wrap items-end gap-2">
                 <label className="flex-1">
                   <span className="label">Efectivo contado al cerrar</span>
-                  <input name="monto" type="number" min="0" step="1" required className="input" />
+                  <CampoDinero name="monto" required />
                 </label>
                 <button className="btn">Cerrar caja</button>
+                <button type="reset" className="btn-sec">Cancelar</button>
               </form>
             </>
           ) : (
             <form action={abrirCaja} className="flex flex-wrap items-end gap-2">
               <label className="flex-1">
                 <span className="label">Efectivo inicial en la caja</span>
-                <input name="monto" type="number" min="0" step="1" required className="input" />
+                <CampoDinero name="monto" required />
               </label>
               <button className="btn">Abrir caja</button>
+              <button type="reset" className="btn-sec">Cancelar</button>
             </form>
           )}
         </section>
@@ -112,7 +115,7 @@ export default async function Caja({ searchParams }: { searchParams: Promise<SP>
               <option value="egreso">Gasto / egreso</option>
               <option value="ingreso">Ingreso</option>
             </select>
-            <input name="monto" type="number" min="1" step="1" required placeholder="Monto" aria-label="Monto" className="input" />
+            <CampoDinero name="monto" required placeholder="Monto" aria-label="Monto" />
             <select name="medio" aria-label="Medio de pago" className="input capitalize">
               {MEDIOS.map((m) => <option key={m} value={m}>{m}</option>)}
             </select>
@@ -122,7 +125,10 @@ export default async function Caja({ searchParams }: { searchParams: Promise<SP>
               <optgroup label="Ingresos">{CATEGORIAS_INGRESO.map((c) => <option key={c}>{c}</option>)}</optgroup>
             </select>
             <input name="concepto" placeholder="Detalle (opcional)" aria-label="Detalle" className="input sm:col-span-2" />
-            <button className="btn sm:col-span-2">Registrar</button>
+            <div className="flex gap-2 sm:col-span-2">
+              <button className="btn">Registrar</button>
+              <button type="reset" className="btn-sec">Cancelar</button>
+            </div>
           </form>
         </section>
       </div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { abonarCuota, editarCuota } from "@/actions/cuotas";
 import { Aviso } from "@/components/aviso";
+import { CampoDinero } from "@/components/campo-dinero";
 import { EstadoCuota } from "@/components/estado-cuota";
 import { getSesion } from "@/lib/auth";
 import { dinero, diasPara, fecha, MEDIOS } from "@/lib/util";
@@ -134,7 +135,7 @@ async function Lista({ sp, estado, admin }: { sp: SP; estado: string; admin: boo
                             <form action={abonarCuota} className="flex flex-wrap gap-2">
                               <input type="hidden" name="cuota_id" value={c.id} />
                               <input type="hidden" name="volver" value={volver} />
-                              <input name="monto" type="number" min="1" step="1" required placeholder="Abono" aria-label="Monto del abono" className="input w-28" />
+                              <CampoDinero name="monto" required placeholder="Abono" aria-label="Monto del abono" className="input w-32" />
                               <select name="medio" aria-label="Medio de pago" className="input w-36 capitalize">
                                 {MEDIOS.map((m) => <option key={m} value={m}>{m}</option>)}
                               </select>
@@ -149,7 +150,7 @@ async function Lista({ sp, estado, admin }: { sp: SP; estado: string; admin: boo
                                 <form action={editarCuota} className="mt-2 flex flex-wrap gap-2">
                                   <input type="hidden" name="id" value={c.id} />
                                   <input type="hidden" name="volver" value={volver} />
-                                  <input name="monto" type="number" min="1" step="1" required defaultValue={Number(c.monto)} aria-label="Monto" className="input w-28" />
+                                  <CampoDinero name="monto" required defaultValue={Number(c.monto)} aria-label="Monto" className="input w-32" />
                                   <input name="vence" type="date" required defaultValue={c.vence} aria-label="Vence" className="input w-40" />
                                   <button className="btn-sec">Guardar</button>
                                 </form>
